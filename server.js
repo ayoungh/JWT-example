@@ -5,18 +5,19 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 
-//get configs
+//get configs from a file
 var config = require('./config');
 
-var jwtsct = 'tonys0secret';
-
+//change this to a db
 var user = {
-  username: 'username'
-  ,password: 'password'
+  username: 'user'
+  ,password: 'p'
 };
 
+//set app
 var app = express();
 
+//use middlewares
 app.use(cors());
 app.use(bodyParser.json());
 app.use(expressJwt({
@@ -26,6 +27,8 @@ app.use(expressJwt({
           })
         );
 
+
+//ROUTES
 app.get('/random-user', function (req, res) {
 
   var user = faker.helpers.userCard();
@@ -36,6 +39,7 @@ app.get('/random-user', function (req, res) {
 
 app.post('/login', authenticate, function (req, res) {
 
+  //JWT details
   var payload = {
     username: user.username
   };
