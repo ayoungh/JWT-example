@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 
+//get configs
+var config = require('./config');
+
 var jwtsct = 'tonys0secret';
 
 var user = {
@@ -17,7 +20,7 @@ var app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(expressJwt({
-            secret: jwtsct
+            secret: config.jwtSecret
           }).unless({
             path: ['/login']
           })
@@ -44,7 +47,7 @@ app.post('/login', authenticate, function (req, res) {
 
 
   //create the signed token
-  var token = jwt.sign(payload, jwtsct, options);
+  var token = jwt.sign(payload, config.jwtSecret, options);
 
 
   res.send({
@@ -60,7 +63,11 @@ app.get('/me', function (req, res) {
 });
 
 
-app.listen('3000', function () {
+//set the port to use from config file
+app.set('port', config.port);
+
+
+app.listen(app.get('port'), function () {
   console.info('http://localhost:3000');
 });
 
