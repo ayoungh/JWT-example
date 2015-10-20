@@ -29,6 +29,11 @@ app.use(expressJwt({
 
 
 //ROUTES
+
+app.get('/', function (req, res) {
+  res.send({'root':true});
+});
+
 app.get('/random-user', function (req, res) {
 
   var user = faker.helpers.userCard();
@@ -72,7 +77,7 @@ app.set('port', config.port);
 
 
 app.listen(app.get('port'), function () {
-  console.info('http://localhost:3000');
+  console.info('http://localhost:'+config.port);
 });
 
 
@@ -80,6 +85,8 @@ app.listen(app.get('port'), function () {
 //UTIL FUNCTIONS
 function authenticate(req, res, next) {
   var body = req.body;
+
+  console.log('auth func...')
 
   if (!body.username || !body.password) {
     res.status(400).end('Must provide username and password');
@@ -90,4 +97,4 @@ function authenticate(req, res, next) {
   }
   next();
 
-}
+};
